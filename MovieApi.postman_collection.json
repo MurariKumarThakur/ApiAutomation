@@ -1,0 +1,308 @@
+{
+	"info": {
+		"_postman_id": "ddd44896-74a5-40d6-8760-87d3b0127090",
+		"name": "MovieApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2074333"
+	},
+	"item": [
+		{
+			"name": "getTopRatedMovies",
+			"item": [
+				{
+					"name": "TC_001:Check api is returning 200 status  for valid request",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"should api is returning 200 status for valid request\",()=>{",
+									"    let res = pm.response.json();",
+									"    pm.expect(pm.response.code).to.eql(200);",
+									"    ",
+									"})",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.themoviedb.org/3/movie/top_rated?api_key={{apiKeys}}&language=en-US&page=1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"themoviedb",
+								"org"
+							],
+							"path": [
+								"3",
+								"movie",
+								"top_rated"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKeys}}"
+								},
+								{
+									"key": "language",
+									"value": "en-US"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_002:Check   api is  returning  page,results,total_pages,total_results  fields in response",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check response body is contaning  page,results,total_pages,total_results fields in response body\",()=>{",
+									"    let res = pm.response.json();",
+									"    let expected_fields =[\"page\",\"results\",\"total_pages\",\"total_results\"]",
+									"     expected_fields.map((data,i)=>{",
+									"         pm.expect(Object.keys(res)[i]).to.eql(data);",
+									"     })",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.themoviedb.org/3/movie/top_rated?api_key={{apiKeys}}&language=en-US&page=1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"themoviedb",
+								"org"
+							],
+							"path": [
+								"3",
+								"movie",
+								"top_rated"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKeys}}"
+								},
+								{
+									"key": "language",
+									"value": "en-US"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_003:Check   api is  returning  message when we are request page =501",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"should api is returning 200 status for valid request\",()=>{",
+									"    let res = pm.response.json();",
+									"    pm.expect(res.errors[0]).to.eql(\"page must be less than or equal to 500\")",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.themoviedb.org/3/movie/top_rated?api_key={{apiKeys}}&language=en-US&page=501",
+							"protocol": "https",
+							"host": [
+								"api",
+								"themoviedb",
+								"org"
+							],
+							"path": [
+								"3",
+								"movie",
+								"top_rated"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKeys}}"
+								},
+								{
+									"key": "language",
+									"value": "en-US"
+								},
+								{
+									"key": "page",
+									"value": "501"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "TC_004:Check api response why api keys is wrong",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check api response in case of wrong api_key\",()=>{",
+									"    let res = pm.response.json();",
+									"    pm.expect(res.status_message).to.eql(\"Invalid API key: You must be granted a valid key.\")",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1&api_key=1",
+							"protocol": "https",
+							"host": [
+								"api",
+								"themoviedb",
+								"org"
+							],
+							"path": [
+								"3",
+								"movie",
+								"top_rated"
+							],
+							"query": [
+								{
+									"key": "language",
+									"value": "en-US"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "query",
+									"value": "results.id=851644",
+									"disabled": true
+								},
+								{
+									"key": "api_key",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "MovieRating",
+			"item": [
+				{
+					"name": "TC_001 : Check getting 201 status for valid  movieId",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check api is returning 201 status in case of valid request\",()=>{",
+									"  pm.expect(pm.response.code).to.eql(201);",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"value\": 8.5\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://api.themoviedb.org/3/movie/238/rating?api_key={{apiKeys}}",
+							"protocol": "https",
+							"host": [
+								"api",
+								"themoviedb",
+								"org"
+							],
+							"path": [
+								"3",
+								"movie",
+								"238",
+								"rating"
+							],
+							"query": [
+								{
+									"key": "api_key",
+									"value": "{{apiKeys}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "apiKeys",
+			"value": "a9f60e8964f0055965f1fdf5ded2ad42",
+			"type": "string"
+		}
+	]
+}
